@@ -8,7 +8,6 @@ hasSaveLocation = len(sys.argv) == 2
 
 if (hasSaveLocation):
   saveLocation = sys.argv[1]
-  print(saveLocation)
   url = "https://chicken.photos"
   response = requests.get(url)
   if (response.status_code > 200):
