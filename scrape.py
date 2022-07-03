@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import sys
 import os
+from os.path import exists
 
 hasSaveLocation = len(sys.argv) == 2
 
@@ -26,9 +27,10 @@ if (hasSaveLocation):
     img_data = requests.get(src)
     if (img_data.ok):
       fullPath = '{saveLocation}/{img_name}.jpg'.format(saveLocation=saveLocation, img_name=img_name)
-      with open(fullPath, 'wb') as handler:
-        handler.write(img_data.content)
-      os.system("/usr/bin/gsettings set org.gnome.desktop.background picture-uri {fullPath}".format(fullPath=fullPath))
+      if (not exists(fullPath)):
+        with open(fullPath, 'wb') as handler:
+          handler.write(img_data.content)
+        os.system("/usr/bin/gsettings set org.gnome.desktop.background picture-uri {fullPath}".format(fullPath=fullPath))
     else:
       print('{error} on {url}'.format(error=img_data.status_code, url=src))
 else:
